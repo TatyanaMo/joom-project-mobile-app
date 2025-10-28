@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.joom'
+version = '1.0-SNAPSHOT'
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation 'io.appium:java-client:9.4.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-api:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.24.3'
+    implementation 'org.assertj:assertj-core:3.26.0'
+
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
+        showStandardStreams = true
+    }
+
+    configurations.configureEach {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'org.sjf4j') {
+                details.useVersion '1.7.32'
+            }
+        }
+    }
+}
